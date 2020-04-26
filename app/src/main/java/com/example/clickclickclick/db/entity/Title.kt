@@ -8,4 +8,5 @@ import androidx.room.PrimaryKey
  */
 @Entity
 class Title constructor(val title:String, @PrimaryKey val id :Int=0) {
+
 }
