@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.example.clickclickclick.db.entity.Title
 
 
-@Dao()
+@Dao
 interface TitleDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
