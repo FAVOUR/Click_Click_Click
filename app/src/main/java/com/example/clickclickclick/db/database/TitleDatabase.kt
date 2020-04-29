@@ -13,17 +13,17 @@ import com.example.clickclickclick.db.entity.Title
 @Database(entities = [Title::class],version = 1,exportSchema = false)
 abstract class TitleDatabase:RoomDatabase(){
 
-     abstract var titleDao:TitleDao
+     abstract val titleDao:TitleDao
 }
 
 @Volatile
 lateinit var INSTSNCE:TitleDatabase
 
-  fun getDatabse(context: Context):TitleDatabase{
+  fun getDatabase(context: Context):TitleDatabase{
      synchronized(TitleDatabase::class) {
 
-         if(INSTSNCE ==null) {
-             var db = Room.databaseBuilder(context, TitleDatabase::class.java, "titles_db")
+         if(!::INSTSNCE.isInitialized) {
+             INSTSNCE = Room.databaseBuilder(context, TitleDatabase::class.java, "titles_db")
                  .fallbackToDestructiveMigration()
                  .build()
          }
