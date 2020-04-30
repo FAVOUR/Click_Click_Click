@@ -16,10 +16,13 @@ abstract class TitleDatabase:RoomDatabase(){
      abstract val titleDao:TitleDao
 }
 
+
+
 @Volatile
 lateinit var INSTSNCE:TitleDatabase
 
   fun getDatabase(context: Context):TitleDatabase{
+
      synchronized(TitleDatabase::class) {
 
          if(!::INSTSNCE.isInitialized) {
