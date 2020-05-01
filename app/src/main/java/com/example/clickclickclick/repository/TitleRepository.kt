@@ -6,11 +6,9 @@ import com.example.android.kotlincoroutines.util.BACKGROUND
 import com.example.clickclickclick.MainNetwork
 import com.example.clickclickclick.db.dao.TitleDao
 import com.example.clickclickclick.db.entity.Title
-
-
-
-
-
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 
 
 /**
@@ -43,6 +41,7 @@ class TitleRepository(val network: MainNetwork, val titleDao: TitleDao) {
      * This method does not return the new title. Use [TitleRepository.title] to observe
      * the current tile.
      */
+/*
     fun refreshTitleWithCallbacks(titleRefreshCallback: TitleRefreshCallback) {
         // This request will be run on a background thread by retrofit
         BACKGROUND.submit {
@@ -65,6 +64,28 @@ class TitleRepository(val network: MainNetwork, val titleDao: TitleDao) {
                     TitleRefreshError("Unable to refresh title", cause))
             }
         }
+    }
+*/
+
+    suspend  fun refreshTitle(){
+
+withContext(Dispatchers.IO) {
+
+    try {
+            // Make network request using a blocking call
+            val result = network.fetchNextTitle()
+
+                // Save it to database
+                titleDao.insertTitle(Title(result))
+
+        } catch (cause: Throwable) {
+            // If anything throws an exception, inform the caller
+//            titleRefreshCallback.onError(
+        throw  TitleRefreshError("Unable to refresh title", cause)
+//        )
+        }
+
+}
     }
 }
 

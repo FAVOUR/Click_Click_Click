@@ -12,7 +12,7 @@ import com.example.clickclickclick.db.entity.Title
 interface TitleDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertTitle(title: Title)
+   suspend fun insertTitle(title: Title)
 
     @get:Query("Select * From Title where id=0")
     val titleLiveData: LiveData<Title?>

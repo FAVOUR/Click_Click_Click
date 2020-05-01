@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.android.kotlincoroutines.util.BACKGROUND
 import com.example.android.kotlincoroutines.util.singleArgViewModelFactory
 import com.example.clickclickclick.repository.TitleRefreshCallback
+import com.example.clickclickclick.repository.TitleRefreshError
 import com.example.clickclickclick.repository.TitleRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -117,17 +118,30 @@ class MainViewModel(val repository: TitleRepository):ViewModel() {
      */
     fun refreshTitle() {
         // TODO: Convert refreshTitle to use coroutines
-        _spinner.value = true
-        repository.refreshTitleWithCallbacks(object : TitleRefreshCallback {
-            override fun onCompleted() {
-                _spinner.postValue(false)
-            }
+   viewModelScope.launch {
 
-            override fun onError(cause: Throwable) {
-                _snackBar.postValue(cause.message)
-                _spinner.postValue(false)
-            }
-        })
+       try{
+           _spinner.value = true
+
+           repository.refreshTitle()
+
+       }catch (error:TitleRefreshError){
+           _snackBar.value=error.message
+       }finally {
+                    _spinner.value=false
+       }
+
+   }
+//        repository.refreshTitleWithCallbacks(object : TitleRefreshCallback {
+//            override fun onCompleted() {
+//                _spinner.postValue(false)
+//            }
+//
+//            override fun onError(cause: Throwable) {
+//                _snackBar.postValue(cause.message)
+//                _spinner.postValue(false)
+//            }
+//        })
     }
 
 }

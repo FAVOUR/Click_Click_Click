@@ -9,7 +9,7 @@ import org.junit.Rule
 class MainViewModelTest {
 
 //    @get:Rule
-//    val couroutineScope = MainC
+//    val courouti  neScope = MainC
 
 
     @get:Rule
